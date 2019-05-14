@@ -1,6 +1,6 @@
 const users = require('../models').users;
 
-const postUserController = function(req, res) {
+const postUserController = function (req, res) {
     const { body } = req;
     console.log(req);
     // users.create({
