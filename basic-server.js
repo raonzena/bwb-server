@@ -10,7 +10,7 @@ app.use(routes);
 
 // app.use('/', routes);
 app.listen(3000, () => {
-  console.log('chatterbox-serer listen on 3000');
+    console.log('chatterbox-serer listen on 3000');
 });
 
 module.exports = app;
