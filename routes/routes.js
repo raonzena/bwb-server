@@ -9,6 +9,6 @@ router.post('/login', login.loginController);
 
 
 router.get('/', (req, res) => {
-    res.send('success');
+   res.send('success');
 });
 module.exports = router;
