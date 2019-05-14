@@ -1,8 +1,17 @@
-module.exports = (sequelize, DataTypes) => {
-    const restaurants = sequelize.define('restaurants', {
-      placeId: DataTypes.STRING
-    }, {});
-    restaurants.associate = function(models) {
-    };
-    return restaurants;
+/* jshint indent: 2 */
+
+module.exports = function(sequelize, DataTypes) {
+  return sequelize.define('restaurants', {
+    id: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      primaryKey: true
+    },
+    placeId: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    }
+  }, {
+    tableName: 'restaurants'
+  });
 };
