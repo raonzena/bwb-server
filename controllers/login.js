@@ -1,12 +1,13 @@
-const users = require('../models/users').users;
+const users = require('../models').users;
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 const loginController = function (req, res) {
     let data = req.body;
-    let encryptedPw = crypto.createHash('sha1').update(data.pw).digest('hex')
-
+    let encryptedPw = crypto.createHash('sha1').update(data.pw).digest('hex'); // 비밀번호 저장시 사용한 암호화 코드
     users
         .findOne({
+            attributes: ['userId', 'userPw'],
             where: {
                 userId: data.id
             }
@@ -26,9 +27,9 @@ const loginController = function (req, res) {
         })
         .catch(error => {
             console.log(error);
-            res.status(500).send(error)  //server eror
+            res.status(500).send(error);  //server error
         })
 }
 
 
-module.exports = loginController;
+module.exports = { loginController };
