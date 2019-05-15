@@ -1,6 +1,7 @@
 const meetings = require('../models').meetings;
 const restaurants = require('../models').restaurants;
 const users = require('../models').users;
+const members = require('../models').members;
 const jwt = require('jsonwebtoken');
 
 const verifyOptions = {
@@ -46,8 +47,16 @@ const newMeetingController = function (req, res) {
                                 time: data.time,
                                 limit: data.limit
                             })
+                            .then(meetingResult => {
+                                console.log(meetingResult)
+                                members
+                                    .create({
+                                        meeting_id: meetingResult.dataValues.id,
+                                        members_id: userResult.dataValues.id
+                                    })
+                            })
                             .then(result => {
-                                res.status(200).json({ meetingId: result.id });
+                                res.status(201).send('success');
                             })
                     })
             })
