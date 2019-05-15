@@ -14,7 +14,7 @@ const postUserController = function (req, res) {
     })
     .catch(err => {
         console.log(err);
-        res.status(400).send('error');
+        res.status(500).send(err);
     });
 };
 
@@ -25,15 +25,15 @@ const idDuplicationCheckController = function (req, res) {
         where: [{userId: body.id}]
     })
     .then(result => {
-        res.status(200).send(result);
+        res.status(200).json(result);
     })
     .catch(err => {
-        console.log(err);
-        res.status(404).send('error');
+        res.status(500).send(err);
     });
 };
 
 
 module.exports = {
-    postUserController
+    postUserController,
+    idDuplicationCheckController 
 };
