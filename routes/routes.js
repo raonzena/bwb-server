@@ -6,6 +6,7 @@ const meetingDetail = require('../controllers/meetingDetail');
 const meetingDelete = require('../controllers/meetingDelete');
 const newMeeting = require('../controllers/newMeeting');
 const newMember = require('../controllers/newMember');
+const meetingLists = require('../controllers/meetingLists');
 
 router.post('/signup', signup.postUserController);
 router.post('/login', login.loginController);
@@ -15,6 +16,7 @@ router.post('/meetings/delete/meeting', meetingDelete.postMeetingDeleteControlle
 router.post('/meetings/new/meeting', newMeeting.newMeetingController);
 router.post('/meetings/new/member', newMember.newMemberController);
 router.get('/nickname/check', signup.nicknameDuplicationCheckController);
+router.get('//meetings/list/region', meetingLists.meetingListsController);
 
 
 router.get('/', (req, res) => {
