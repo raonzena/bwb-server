@@ -5,6 +5,7 @@ const login = require('../controllers/login');
 
 
 router.post('/signup', signup.postUserController);
+router.get('/idcheck', signup.idDuplicationCheckController);
 router.post('/login', login.loginController);
 
 
