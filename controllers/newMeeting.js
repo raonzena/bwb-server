@@ -11,6 +11,7 @@ const verifyOptions = {
 //토큰 유효성 검사
 const authorized = function (token) {
     let legit = jwt.verify(token, 'bwb12', verifyOptions);
+    console.log('>>>>>>>>>>', legit.exp)
     if (legit.isLogin) {
         return true;
     } else {
