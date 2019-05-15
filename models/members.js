@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('members', {
+  var members = sequelize.define('members', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -27,4 +27,13 @@ module.exports = function (sequelize, DataTypes) {
   }, {
       tableName: 'members'
     });
+  members.associate = function (models) {
+    members.belongsTo(models.meetings, {
+      foreignKey: "meeting_id"
+    });
+    members.belongsTo(models.users, {
+      foreignKey: "members_id"
+    });
+  };
+  return members;
 };
