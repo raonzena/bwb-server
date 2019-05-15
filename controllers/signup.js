@@ -32,8 +32,23 @@ const idDuplicationCheckController = function (req, res) {
     });
 };
 
+const nicknameDuplicationCheckController = function (req, res) {
+    const { query } = req;
+    users
+    .count({
+        where: [{nickname: query.nick_name}]
+    })
+    .then(result => {
+        res.status(200).json(result);
+    })
+    .catch(err => {
+        res.status(500).send(err);
+    });
+};
+
 
 module.exports = {
     postUserController,
-    idDuplicationCheckController 
+    idDuplicationCheckController,
+    nicknameDuplicationCheckController
 };
