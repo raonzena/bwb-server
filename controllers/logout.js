@@ -25,6 +25,13 @@ const logoutController = function (req, res) {
                     }
                 })
         })
+        .then(result => {
+            res.status(201).send('success');
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send(err);
+        });
 }
 
 module.exports = { logoutController };
