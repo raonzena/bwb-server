@@ -5,6 +5,7 @@ const login = require('../controllers/login');
 const meetingDetail = require('../controllers/meetingDetail');
 const meetingDelete = require('../controllers/meetingDelete');
 const newMeeting = require('../controllers/newMeeting');
+const mypage = require('../controllers/mypage');
 const newMember = require('../controllers/newMember');
 const meetingLists = require('../controllers/meetingLists');
 const logout = require('../controllers/logout');
@@ -18,6 +19,7 @@ router.post('/meetings/delete/meeting', meetingDelete.postMeetingDeleteControlle
 router.post('/meetings/new/meeting', newMeeting.newMeetingController);
 router.post('/meetings/new/member', newMember.newMemberController);
 router.get('/nickname/check', signup.nicknameDuplicationCheckController);
+router.get('/mypage', mypage.getMyScheduleController);
 router.get('/meetings/list/region', meetingLists.meetingListsController);
 router.get('/logout', logout.logoutController);
 router.get('/meetings/list/restaurant', restaurantMeetingList.restaurantMeetingListController);

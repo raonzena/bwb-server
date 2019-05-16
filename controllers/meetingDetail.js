@@ -1,21 +1,23 @@
 const meetings = require('../models').meetings;
 const users = require('../models').users;
+const members = require('../models').members;
 
 const getMeetingDetailController = function (req, res) {
     const { query } = req;
-
-    meetings
-    .findOne({
-        include: [users],
-        where: { id: query.meetingId }
+    
+    members
+    .findAll({
+        include: [{
+            model: meetings,
+            where: { id: query.meetingId },
+            include: { model: users }
+        },
+        {
+            model: users
+        }],
     })
-    .then(result => {
-        console.log(result);
-        if(result) {
-            res.status(200).json(result);
-        } else {
-            res.status(200).send();
-        }
+    .then(results => {
+        res.status(200).json(results);
     })
     .catch(err => {
         console.log(err);
