@@ -1,17 +1,30 @@
-const users = require('../models').users;
+const meetings = require('../models').meetings;
+const members = require('../models').members;
 
 const postMeetingDeleteController = function (req, res) {
     const { body } = req;
 
-    users
-    .destroy({
-        where: { id: body.meetingId }
+    members
+    .count({
+        where: { meeting_id: body.meetingId }
     })
     .then(result => {
-        res.status(201).send('success');
+        if(result === 0) {
+            meetings
+            .destroy({
+                where: { id: body.meetingId }
+            })
+            .then(result => {
+                res.status(201).send('success');
+            })
+            .catch(err => {
+                res.status(500).send(err);
+            })
+        } else {
+            res.status(400).send('delete failed');
+        }
     })
     .catch(err => {
-        console.log(err);
         res.status(500).send(err);
     });
 };
