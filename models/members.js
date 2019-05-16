@@ -1,10 +1,11 @@
 /* jshint indent: 2 */
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   var members = sequelize.define('members', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
+      autoIncrement: true,
       primaryKey: true
     },
     meeting_id: {
@@ -24,9 +25,9 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   }, {
-    tableName: 'members'
-  });
-  members.associate = function(models) {
+      tableName: 'members'
+    });
+  members.associate = function (models) {
     members.belongsTo(models.meetings, {
       foreignKey: "meeting_id"
     });

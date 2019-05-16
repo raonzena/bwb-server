@@ -1,21 +1,11 @@
 const meetings = require('../models').meetings;
 const restaurants = require('../models').restaurants;
 const users = require('../models').users;
+const members = require('../models').members;
 const jwt = require('jsonwebtoken');
+const authorized = require('../modules/tokenUtil').authorized;
+const verifyOptions = require('../modules/tokenUtil').verifyOptions;
 
-const verifyOptions = {
-    expiresIn: "7d",
-    algorithm: "RS256"
-}
-//토큰 유효성 검사
-const authorized = function (token) {
-    let legit = jwt.verify(token, 'bwb12', verifyOptions);
-    if (legit.isLogin) {
-        return true;
-    } else {
-        return false;
-    }
-}
 
 const newMeetingController = function (req, res) {
     let token = req.headers.authorization
@@ -46,8 +36,16 @@ const newMeetingController = function (req, res) {
                                 time: data.time,
                                 limit: data.limit
                             })
+                            .then(meetingResult => {
+                                console.log(meetingResult)
+                                members
+                                    .create({
+                                        meeting_id: meetingResult.dataValues.id,
+                                        members_id: userResult.dataValues.id
+                                    })
+                            })
                             .then(result => {
-                                res.status(200).json({ meetingId: result.id });
+                                res.status(201).send('success');
                             })
                     })
             })
