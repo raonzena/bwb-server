@@ -2,20 +2,9 @@ const meetings = require('../models').meetings;
 const users = require('../models').users;
 const members = require('../models').members;
 const jwt = require('jsonwebtoken');
+const authorized = require('../modules/tokenUtil').authorized;
+const verifyOptions = require('../modules/tokenUtil').verifyOptions;
 
-const verifyOptions = {
-    expiresIn: "7d",
-    algorithm: "RS256"
-}
-//토큰 유효성 검사
-const authorized = function (token) {
-    let legit = jwt.verify(token, 'bwb12', verifyOptions);
-    if (legit.isLogin) {
-        return true;
-    } else {
-        return false;
-    }
-}
 
 const newMemberController = function (req, res) {
     let token = req.headers.authorization;
