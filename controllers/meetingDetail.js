@@ -1,34 +1,6 @@
 const meetings = require('../models').meetings;
 const users = require('../models').users;
 const members = require('../models').members;
-<<<<<<< HEAD
-
-const getMeetingDetailController = function (req, res) {
-    const { query } = req;
-    
-    members
-    .findAll({
-        include: [{
-            model: meetings,
-            where: { id: query.meetingId },
-            include: { model: users }
-        },
-        {
-            model: users
-        }],
-    })
-    .then(results => {
-        res.status(200).json(results);
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(500).send(err);
-    });
-};
-
-module.exports = {
-    getMeetingDetailController 
-=======
 const verifyOptions = require('../modules/tokenUtil').verifyOptions;
 const jwt = require('jsonwebtoken');
 
@@ -72,5 +44,4 @@ const getMeetingDetailController = function (req, res) {
 
 module.exports = {
     getMeetingDetailController
->>>>>>> fb55404e015ea105c7c63d573d06f4d0941add86
 };
