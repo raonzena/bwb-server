@@ -14,8 +14,8 @@ exports.tokenMaker = (userId) => {
     }, 'bwb12', { expiresIn: 24 * 3600 * 1000 })
 }
 
-exports.authorized = function (token) {
-    tokenBlacklist
+exports.authorized = async function (token) {
+    return await tokenBlacklist
         .findOne({
             where: {
                 tokens: token
@@ -25,7 +25,7 @@ exports.authorized = function (token) {
             if (tokenResult) {
                 return false;
             } else {
-                let legit = jwt.verify(token, 'bwb12', verifyOptions);
+                let legit = jwt.verify(token, 'bwb12', this.verifyOptions);
                 if (legit.isLogin) {
                     return true;
                 } else {

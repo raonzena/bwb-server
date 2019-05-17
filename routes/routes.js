@@ -10,6 +10,7 @@ const newMember = require('../controllers/newMember');
 const meetingLists = require('../controllers/meetingLists');
 const logout = require('../controllers/logout');
 const restaurantMeetingList = require('../controllers/restaurantMeetingList');
+const cancelMeeting = require('../controllers/cancelMeeting');
 
 router.post('/signup', signup.postUserController);
 router.post('/login', login.loginController);
@@ -23,7 +24,7 @@ router.get('/mypage', mypage.getMyScheduleController);
 router.get('/meetings/list/region', meetingLists.meetingListsController);
 router.get('/logout', logout.logoutController);
 router.get('/meetings/list/restaurant', restaurantMeetingList.restaurantMeetingListController);
-
+router.post('/meetings/cancel/member', cancelMeeting.cancelMeetingController);
 
 router.get('/', (req, res) => {
    res.send('success');
