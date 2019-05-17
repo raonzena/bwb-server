@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const authorized = require('../modules/tokenUtil').authorized;
 const verifyOptions = require('../modules/tokenUtil').verifyOptions;
 
-const cancelMeetingController = function (req, res) {
+const cancelMemberController = function (req, res) {
     let token = req.headers.authorization;
     if (token === undefined || !authorized(token)) {
         res.sendStatus(405);
@@ -35,4 +35,4 @@ const cancelMeetingController = function (req, res) {
     }
 }
 
-module.exports = { cancelMeetingController };
+module.exports = { cancelMemberController };
