@@ -11,6 +11,7 @@ const meetingLists = require('../controllers/meetingLists');
 const logout = require('../controllers/logout');
 const restaurantMeetingList = require('../controllers/restaurantMeetingList');
 const cancelMember = require('../controllers/cancelMember');
+const getNickname = require('../controllers/getNickname')
 
 router.post('/signup', signup.postUserController);
 router.post('/login', login.loginController);
@@ -25,6 +26,7 @@ router.get('/meetings/list/region', meetingLists.meetingListsController);
 router.get('/logout', logout.logoutController);
 router.get('/meetings/list/restaurant', restaurantMeetingList.restaurantMeetingListController);
 router.post('/meetings/cancel/member', cancelMember.cancelMemberController);
+router.get('/userNickname', getNickname.getNicknameController)
 
 router.get('/', (req, res) => {
    res.send('success');
