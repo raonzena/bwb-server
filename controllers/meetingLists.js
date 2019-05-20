@@ -42,31 +42,37 @@ const meetingListsController = function (req, res) {
             }
         })
         .then(meetingResult => {
-            let result = [];
-            for (let i = 0; i < meetingResult.length; i++) {
-                members
-                    .findAndCountAll({
-                        where: {
-                            meeting_id: meetingResult[i].dataValues.id
-                        }
-                    })
-                    .then(memberResult => {
-                        let newResult = {};
-                        newResult.placeId = data;
-                        newResult.meetingId = meetingResult[i].dataValues.id;
-                        newResult.meetingName = meetingResult[i].dataValues.name;
-                        newResult.meetingTime = dateFormat(meetingResult[i].dataValues.time);
-                        newResult.numberOfMembers = memberResult.count;
-                        newResult.limit = meetingResult[i].dataValues.limit;
-                        newResult.isActive = isActive(meetingResult[i].dataValues.time);
-                        result.push(newResult);
-                        if (i === meetingResult.length - 1) {
-                            res.status(200).json({ result: result });
-                        }
-                    })
+            if (meetingResult.length === 0) {
+                res.status(200).json({ result: [] });
+            } else {
+                let result = [];
+                for (let i = 0; i < meetingResult.length; i++) {
+                    members
+                        .findAndCountAll({
+                            where: {
+                                meeting_id: meetingResult[i].dataValues.id
+                            }
+                        })
+                        .then(memberResult => {
+                            let newResult = {};
+                            newResult.placeId = data;
+                            newResult.meetingId = meetingResult[i].dataValues.id;
+                            newResult.meetingName = meetingResult[i].dataValues.name;
+                            newResult.meetingTime = dateFormat(meetingResult[i].dataValues.time);
+                            newResult.numberOfMembers = memberResult.count;
+                            newResult.limit = meetingResult[i].dataValues.limit;
+                            newResult.isActive = isActive(meetingResult[i].dataValues.time);
+                            result.push(newResult);
+                            if (i === meetingResult.length - 1) {
+                                console.log(result)
+                                res.status(200).json({ result: result });
+                            }
+                        })
+                }
+                console.log('result', result)
+                return result;
             }
-            console.log('result', result)
-            return result;
+
         })
         .catch(err => {
             console.log(err);
