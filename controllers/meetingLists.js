@@ -5,8 +5,8 @@ const Sequelize = require('sequelize');
 const op = Sequelize.Op
 
 
-const meetingListsController = function (req, res) {
-    let data = req.query.q;
+const meetingListsController = (req, res) => {
+    let data = req.body.restaurantInfos;
     let now = new Date();
     let year = now.getFullYear();
     let month = now.getMonth();
@@ -30,29 +30,39 @@ const meetingListsController = function (req, res) {
         }
         return year + '-' + month + '-' + date + ' ' + time;
     }
-
-    meetings
-        .findAll({
-            where: {
-                restaurant_id: data,
-                time: {
-                    [op.gte]: minDate,
-                    [op.lt]: maxDate
+    const findMeetings = async () => {
+        let meetingResult = [];
+        for (let i = 0; i < data.length; i++) {
+            let aMeeting = await meetings.findAll({
+                where: {
+                    restaurant_id: data[i].place_id,
+                    time: {
+                        [op.gte]: minDate,
+                        [op.lt]: maxDate
+                    }
                 }
+            })
+            if (aMeeting.length >= 1) {
+                aMeeting.forEach(e => meetingResult.push(e))
             }
-        })
+        }
+        return meetingResult;
+    }
+    findMeetings()
         .then(meetingResult => {
-            let result = [];
-            for (let i = 0; i < meetingResult.length; i++) {
-                members
-                    .findAndCountAll({
-                        where: {
-                            meeting_id: meetingResult[i].dataValues.id
-                        }
-                    })
-                    .then(memberResult => {
+            if (meetingResult.length === 0) {
+                res.status(200).json({ result: [] })
+            } else {
+                const resultGen = async () => {
+                    let result = [];
+                    for (let i = 0; i < meetingResult.length; i++) {
+                        console.log(meetingResult[i].dataValues)
+                        let memberResult = await members
+                            .findAndCountAll({
+                                where: { meeting_id: meetingResult[i].dataValues.id }
+                            })
                         let newResult = {};
-                        newResult.placeId = data;
+                        newResult.placeId = meetingResult[i].dataValues.restaurant_id
                         newResult.meetingId = meetingResult[i].dataValues.id;
                         newResult.meetingName = meetingResult[i].dataValues.name;
                         newResult.meetingTime = dateFormat(meetingResult[i].dataValues.time);
@@ -60,19 +70,17 @@ const meetingListsController = function (req, res) {
                         newResult.limit = meetingResult[i].dataValues.limit;
                         newResult.isActive = isActive(meetingResult[i].dataValues.time);
                         result.push(newResult);
-                        if (i === meetingResult.length - 1) {
-                            res.status(200).json({ result: result });
-                        }
-                    })
+                    }
+                    res.status(200).json({ result: result })
+                        .catch(err => {
+                            console.log(err);
+                            res.status(500).send(err);
+                        })
+                }
+                resultGen();
             }
-            console.log('result', result)
-            return result;
         })
-        .catch(err => {
-            console.log(err);
-            res.status(500).send(err);
-        });
-}
+};
 
 module.exports = { meetingListsController };
 

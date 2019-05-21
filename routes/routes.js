@@ -22,7 +22,7 @@ router.post('/meetings/new/meeting', newMeeting.newMeetingController);
 router.post('/meetings/new/member', newMember.newMemberController);
 router.get('/nickname/check', signup.nicknameDuplicationCheckController);
 router.get('/mypage', mypage.getMyScheduleController);
-router.get('/meetings/list/region', meetingLists.meetingListsController);
+router.post('/meetings/list/region', meetingLists.meetingListsController);
 router.get('/logout', logout.logoutController);
 router.get('/meetings/list/restaurant', restaurantMeetingList.restaurantMeetingListController);
 router.post('/meetings/cancel/member', cancelMember.cancelMemberController);
