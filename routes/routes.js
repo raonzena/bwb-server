@@ -1,32 +1,33 @@
 const express = require('express');
 const router = express.Router();
-const signup = require('../controllers/signup');
-const login = require('../controllers/login');
-const meetingDetail = require('../controllers/meetingDetail');
-const meetingDelete = require('../controllers/meetingDelete');
-const newMeeting = require('../controllers/newMeeting');
-const mypage = require('../controllers/mypage');
-const newMember = require('../controllers/newMember');
-const meetingLists = require('../controllers/meetingLists');
-const logout = require('../controllers/logout');
-const restaurantMeetingList = require('../controllers/restaurantMeetingList');
-const cancelMember = require('../controllers/cancelMember');
-const getNickname = require('../controllers/getNickname')
+const SignupController = require('../controllers/SignupController');
+const AuthController = require('../controllers/AuthController');
+const MeetingController = require('../controllers/MeetingController');
+const MeetingMemberController = require('../controllers/MeetingMemberController');
+const MeetingRestaurantController = require('../controllers/MeetingRestaurantController');
 
-router.post('/signup', signup.postUserController);
-router.post('/login', login.loginController);
-router.get('/id/check', signup.idDuplicationCheckController);
-router.get('/meetings/detail', meetingDetail.getMeetingDetailController);
-router.post('/meetings/delete/meeting', meetingDelete.postMeetingDeleteController);
-router.post('/meetings/new/meeting', newMeeting.newMeetingController);
-router.post('/meetings/new/member', newMember.newMemberController);
-router.get('/nickname/check', signup.nicknameDuplicationCheckController);
-router.get('/mypage', mypage.getMyScheduleController);
-router.post('/meetings/list/region', meetingLists.meetingListsController);
-router.get('/logout', logout.logoutController);
-router.get('/meetings/list/restaurant', restaurantMeetingList.restaurantMeetingListController);
-router.post('/meetings/cancel/member', cancelMember.cancelMemberController);
-router.get('/userNickname', getNickname.getNicknameController)
+router.post('/signup', SignupController.postUser);
+router.get('/id/check', SignupController.idDuplicationCheck);
+router.get('/nickname/check', SignupController.nicknameDuplicationCheck);
+
+router.post('/login', AuthController.login);
+router.get('/logout', AuthController.logout);
+router.get('/mypage', AuthController.getMySchedule);
+router.get('/userNickname', AuthController.getNickname);
+
+router.get('/meetings/detail', MeetingController.getMeetingDetail);
+router.post('/meetings/delete/meeting', MeetingController.postMeetingDelete);
+router.post('/meetings/new/meeting', MeetingController.newMeeting);
+router.post('/meetings/list/region', MeetingController.meetingLists);
+
+router.post('/meetings/new/member', MeetingMemberController.newMember);
+router.post('/meetings/cancel/member', MeetingMemberController.cancelMember);
+
+router.get('/meetings/list/restaurant', MeetingRestaurantController.restaurantMeetingList);
+
+
+//TODO. 기능별 라우터 나누기
+//컨트롤러 묶기 ex) userController => signup login.. 
 
 router.get('/', (req, res) => {
    res.send('success');

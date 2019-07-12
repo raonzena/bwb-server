@@ -15,23 +15,14 @@ const dateRangeGen = () => {
     return dateRange;
 }
 const isActive = (meetingTime) => {
-    if (meetingTime.getTime('+09:00') > new Date().getTime()) {
+    if (meetingTime.getTime() > new Date().getTime()) {
         return true;
     } else {
         return false;
     }
 }
-const dateFormat = (meetingTime) => {
-    let year = meetingTime.getFullYear();
-    let month = meetingTime.getMonth() + 1;
-    let date = meetingTime.getDate();
-    let time = meetingTime.toLocaleTimeString().slice(0, 5);
-    if (month.toString().length === 1) {
-        month = '0' + month;
-    }
-    return year + '-' + month + '-' + date + ' ' + time;
-}
-const restaurantMeetingListController = function (req, res) {
+
+const restaurantMeetingList = function (req, res) {
     let data = req.query.q;
     meetings
         .findAll({
@@ -55,7 +46,7 @@ const restaurantMeetingListController = function (req, res) {
                     newResult.placeId = data;
                     newResult.meetingId = meetingResult[i].dataValues.id;
                     newResult.meetingName = meetingResult[i].dataValues.name;
-                    newResult.meetingTime = dateFormat(meetingResult[i].dataValues.time);
+                    newResult.meetingTime = meetingResult[i].dataValues.time;
                     newResult.numberOfMembers = memberCount.count;
                     newResult.limit = meetingResult[i].dataValues.limit;
                     newResult.isActive = isActive(meetingResult[i].dataValues.time);
@@ -71,21 +62,6 @@ const restaurantMeetingListController = function (req, res) {
         });
 }
 
-
-module.exports = { restaurantMeetingListController };
-
-
-// .findAll({
-//     include: [{
-//         attributes: ['members_id'],
-//         model: meetings,
-//         attributes: ['id', 'restaurant_id', 'name', 'owner_id', 'time', 'limit'],
-//         where: {
-//             restaurant_id: data,
-//             time: {
-//                 [op.gte]: dateGen().minDate,
-//                 [op.lt]: dateGen().maxDate
-//             }
-//         },
-//     }]
-// })
+module.exports = {
+  restaurantMeetingList
+};
